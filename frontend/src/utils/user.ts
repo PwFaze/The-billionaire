@@ -40,7 +40,7 @@ export const login = async (
 ): Promise<User | null> => {
   try {
     const res: AxiosResponse<{ accessToken: string; user: User }> =
-      await apiClient.post("/login/", {
+      await apiClient.post("/user/login/", {
         username: req.username,
         password: req.password,
       });
