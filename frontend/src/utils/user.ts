@@ -39,17 +39,14 @@ export const login = async (
   req: CreateOrLoginUserRequest
 ): Promise<User | null> => {
   try {
-    const res: AxiosResponse<{ accessToken: string; user: User }> =
-      await apiClient.post("/user/login/", {
-        username: req.username,
-        password: req.password,
-      });
+    const res: AxiosResponse = await apiClient.post("/user/login", {
+      username: req.username,
+      password: req.password,
+    });
 
-    const { user } = res.data;
+    localStorage.setItem("userId", res.data.id);
 
-    localStorage.setItem("userId", user.id);
-
-    return user;
+    return res.data;
   } catch (error) {
     console.error("Login failed:", error);
     return null;

@@ -49,17 +49,17 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({
     const protectRoute = async () => {
       setIsReady(false);
 
-      if (path === "/" || path === "/login") {
-        setIsReady(true);
-        return;
-      }
+      // if (path === "/" || path === "/login") {
+      //   setIsReady(true);
+      //   return;
+      // }
 
-      const userObj: User | null = await getUser();
-      if (!userObj) {
-        router.push("/");
-      }
+      // const userObj: User | null = await getUser();
+      // if (!userObj) {
+      //   router.push("/");
+      // }
 
-      setUser(userObj);
+      // setUser(userObj);
 
       setIsReady(true);
     };
