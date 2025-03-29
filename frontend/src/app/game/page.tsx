@@ -7,5 +7,5 @@ export default function GamePage() {
   const { player, date, global, news } = useGame();
   const [location, setLocation] = useState<string>("");
   const [energy, setEnergy] = useState<number>(2);
-  return <div></div>;
+  return <div className="bg-black">dljsa;dad</div>;
 }
