@@ -1,5 +1,7 @@
 "use client";
 
+import OptionBox from "@/components/game/OptionBox";
+import ProfitSummary from "@/components/game/ProfitSummary";
 import { useGame } from "@/contexts/GameContext";
 import { useState } from "react";
 import Image from "next/image";
