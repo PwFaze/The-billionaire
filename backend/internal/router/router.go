@@ -6,6 +6,9 @@ import (
 	"time"
 
 	"github.com/PwFaze/The-billionaire/config"
+	"github.com/PwFaze/The-billionaire/internal/handler"
+	"github.com/PwFaze/The-billionaire/internal/repository"
+	"github.com/PwFaze/The-billionaire/internal/service"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -48,8 +51,17 @@ func (r *Router) Run(mongoDB *mongo.Database) {
 	// versioning
 
 	// setup
-	r.g.Group("api")
+	v1 := r.g.Group("/api/v1")
 
+	userRepository := repository.NewUserRepository(mongoDB, "users")
+	userService := service.NewUserService(userRepository)
+	userHandler := handler.NewUserHandler(userService)
+	userRouter := v1.Group("user")
+
+	userRouter.GET("/:userID", userHandler.GetUserByID)
+	userRouter.POST("/", userHandler.RegisterUser)
+	userRouter.POST("/login", userHandler.LoginUser)
+	userRouter.POST("/:userID", userHandler.UpdateUser)
 	err := r.g.Run(":" + r.conf.App.Port)
 	if err != nil {
 		panic(fmt.Sprintf("Failed to run the server : %v", err))

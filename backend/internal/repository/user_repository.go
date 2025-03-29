@@ -21,7 +21,7 @@ type UserRepository struct {
 	UserCollection *mongo.Collection
 }
 
-func NewBuyerRepository(db *mongo.Database, collectionName string) IUserRepository {
+func NewUserRepository(db *mongo.Database, collectionName string) IUserRepository {
 	return &UserRepository{
 		UserCollection: db.Collection(collectionName),
 	}
