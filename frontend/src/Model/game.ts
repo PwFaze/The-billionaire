@@ -6,10 +6,12 @@ export interface IPlayer {
     stocks: IStock[];
     bank: number;
     gold: number;
+    bonds: IStock[];
+    dept_instruments: IStock[];
   };
 }
 export interface IStock {
-  ticker: string;
+  name: string;
   type: string;
   price: number;
   amount: number;
