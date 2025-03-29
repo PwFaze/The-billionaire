@@ -5,9 +5,11 @@ export interface IPlayer {
   assets: IAssets;
 }
 export interface IAssets {
-  stocks: IStock[];
-  bank: number;
-  gold: number;
+   stocks: IStock[];
+   bank: number;
+   gold: number;
+   bonds: IStock[];
+   dept_instruments: IStock[];
 }
 export interface IStock {
   name: string;
