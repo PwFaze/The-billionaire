@@ -35,18 +35,40 @@ interface GameProviderProps {
 }
 
 export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
-  const [player, setPlayer] = useState<IPlayer>({} as IPlayer);
-  const [date, setDate] = useState<number>(0);
+  const [player, setPlayer] = useState<IPlayer>({
+    id: "player-001",
+    name: "Default Player",
+    balance: 10000,
+    assets: {
+      stocks: [{ name: "AAPL", type: "tech", price: 150, amount: 10 }],
+      bank: 5000,
+      gold: 20,
+    },
+  });
+  const [date, setDate] = useState<number>(1);
   const [global, setGlobal] = useState<{
     stocks: IStock[];
     goldPrice: number;
     interestRate: number;
   }>({
-    stocks: [],
-    goldPrice: 0,
-    interestRate: 0,
+    stocks: [
+      { name: "AAPL", type: "tech", price: 150, amount: 20 },
+      { name: "GOOGL", type: "tech", price: 2800, amount: 20 },
+    ],
+    goldPrice: 20000,
+    interestRate: 0.5,
   });
-  const [news, setNews] = useState<INews[]>([]);
+  const [news, setNews] = useState<INews[]>([
+    {
+      topic: "Stock Surge",
+      description: "Tech stocks are booming!",
+      date: Date.now(),
+      effect: {
+        stocks: [{ type: "tech", rate: 1.1 }], // +10% for tech stocks
+        gold: -2, // Gold price drops by 2%
+      },
+    },
+  ]);
 
   const value = {
     player,

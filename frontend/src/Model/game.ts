@@ -2,14 +2,15 @@ export interface IPlayer {
   id: string;
   name: string;
   balance: number;
-  assets: {
-    stocks: IStock[];
-    bank: number;
-    gold: number;
-  };
+  assets: IAssets;
+}
+export interface IAssets {
+  stocks: IStock[];
+  bank: number;
+  gold: number;
 }
 export interface IStock {
-  ticker: string;
+  name: string;
   type: string;
   price: number;
   amount: number;
