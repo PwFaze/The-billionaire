@@ -1,13 +1,11 @@
 import { IAssets } from "@/Model/game";
 
 interface CurrentSummaryProps {
-  date: number;
   balance: number;
   assets: IAssets;
 }
 
 export default function CurrentSummary({
-  date,
   balance,
   assets,
 }: CurrentSummaryProps) {

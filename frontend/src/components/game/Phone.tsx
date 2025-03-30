@@ -6,6 +6,7 @@ interface PhoneProps {
   news: INews[];
 }
 
+
 const Phone = ({ news }: PhoneProps) => {
   const game = useGame();
   const [isExpanded, setIsExpanded] = useState(false);

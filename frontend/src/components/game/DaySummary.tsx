@@ -1,15 +1,16 @@
+
 "use client";
 import { useGame } from "@/contexts/GameContext";
-import { IAssets, IStock } from "@/Model/game";
+import { IAssets} from "@/Model/game";
+
 
 interface DailySummaryProps {
-  date: number;
   balance: number;
   assests: IAssets;
 }
 
+
 export default function DaySummary({
-  date,
   balance,
   assests,
 }: DailySummaryProps) {

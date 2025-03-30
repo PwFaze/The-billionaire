@@ -40,7 +40,6 @@ export default function Stock({
   return (
     <div className="flex flex-col items-center text-black relative gap-8">
       <CurrentSummary
-        date={game.date}
         balance={game.player.balance}
         assets={game.player.assets}
       />
