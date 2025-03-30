@@ -10,11 +10,10 @@ import OptionBox from "@/components/game/OptionBox";
 import Bank from "@/components/game/Bank";
 import { ILocation, IStock, LOCATION } from "@/Model/game";
 import Stock from "@/components/game/Stock";
-import { set } from "react-hook-form";
-import { g } from "motion/react-client";
 import DaySummary from "@/components/game/DaySummary";
 import PortSummary from "@/components/game/PortSummary";
 import ProfitSummary from "@/components/game/ProfitSummary";
+import ReturnButton from "@/components/game/ReturnButton";
 
 export default function GamePage() {
   const { player, date, global, news, setPlayer, setDate, setGlobal, setNews } =
@@ -44,6 +43,9 @@ export default function GamePage() {
       },
     }));
   };
+  useEffect(() => {
+    if (date === 2) router.push("/end");
+  }, [date]);
   const handleBonds = (amount: number, bondName: string) => {
     const bond = global.bonds?.find((b) => b.name === bondName);
     if (!bond) return "Bond not found";
@@ -95,7 +97,8 @@ export default function GamePage() {
     const totalCost = buyGold * buyGoldPrice;
 
     if (player.assets.bank < totalCost) {
-      return alert("Insufficient funds in the bank");
+      setShowInsufficient(true);
+      return;
     }
 
     setPlayer((prevPlayer) => ({
@@ -112,19 +115,21 @@ export default function GamePage() {
 
   const handleSellGold = () => {
     //sell gold
+    console.log(player);
     const sellGoldPrice = global.sellGoldPrice;
     const totalCost = sellGold * sellGoldPrice;
     const goldToSell = player.assets.gold;
 
     if (goldToSell < sellGold) {
-      return alert("Insufficient gold to sell");
+      setShowInsufficient(true);
+      return;
     }
     if (goldToSell) {
       setPlayer((prevPlayer) => ({
         ...prevPlayer,
+        balance: prevPlayer.balance + totalCost,
         assets: {
           ...prevPlayer.assets,
-          bank: prevPlayer.assets.bank + totalCost, //add to bank
           gold: prevPlayer.assets.gold - sellGold,
         },
       }));
@@ -185,15 +190,41 @@ export default function GamePage() {
       return;
     }
 
+    const existingStockIndex = player.assets.stocks?.findIndex(
+      (s) => s.name === stockName
+    );
+
+    let updatedStocks = [...(player.assets.stocks || [])];
+
+    if (existingStockIndex !== -1 && player.assets.stocks) {
+      // Stock exists, update amount and calculate new average price
+      const existingStock = updatedStocks[existingStockIndex];
+      const newAmount = existingStock.amount + amount;
+      const newAveragePrice =
+        (existingStock.price * existingStock.amount + stock.price * amount) /
+        newAmount;
+
+      updatedStocks[existingStockIndex] = {
+        ...existingStock,
+        amount: newAmount,
+        price: newAveragePrice,
+      };
+    } else {
+      // New stock, add it to the list
+      updatedStocks.push({
+        name: stockName,
+        type: stock.type,
+        price: stock.price,
+        amount,
+      });
+    }
+
     setPlayer((prevPlayer) => ({
       ...prevPlayer,
       balance: prevPlayer.balance - totalCost,
       assets: {
         ...prevPlayer.assets,
-        stocks: [
-          ...(prevPlayer.assets.stocks || []),
-          { name: stockName, type: stock.type, price: stock.price, amount },
-        ],
+        stocks: updatedStocks,
       },
     }));
 
@@ -307,6 +338,10 @@ export default function GamePage() {
           >
             {`ขายทอง บาทละ ${global.sellGoldPrice} บาท`}
           </OptionBox>
+          <ReturnButton
+            returnLocation={LOCATION[5]}
+            setLocation={setLocation}
+          />
 
           {showBuyGold && (
             <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
@@ -319,24 +354,32 @@ export default function GamePage() {
                   className="p-2 mb-4 w-full border rounded"
                   placeholder="Amount to buy"
                 />
-                <div className="flex justify-between">
-                  <button
-                    onClick={() => {
-                      handleBuyGold();
-                      setLocation(LOCATION[1]);
-                      setShowBuyGold(false);
-                      setBuyGold(0);
-                    }}
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
-                  >
-                    Buy
-                  </button>
-                  <button
-                    onClick={() => setShowBuyGold(false)}
-                    className="bg-red-500 text-white px-4 py-2 rounded"
-                  >
-                    Cancel
-                  </button>
+                <div className="flex flex-col">
+                  <div className="flex justify-between">
+                    <button
+                      onClick={() => {
+                        handleBuyGold();
+                        setBuyGold(0);
+                      }}
+                      className="bg-blue-500 text-white px-4 py-2 rounded"
+                    >
+                      Buy
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowInsufficient(false);
+                        setShowBuyGold(false);
+                      }}
+                      className="bg-red-500 text-white px-4 py-2 rounded"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  {showInsufficient && (
+                    <span className="text-red-500 text-center">
+                      เงินไม่เพียงพอในการซื้อทอง
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -356,9 +399,7 @@ export default function GamePage() {
                 <div className="flex justify-between">
                   <button
                     onClick={() => {
-                      handleSellGold;
-                      setLocation(LOCATION[5]);
-                      setShowSellGold(false);
+                      handleSellGold();
                       setSellGold(0);
                     }}
                     className="bg-blue-500 text-white px-4 py-2 rounded"
@@ -371,6 +412,9 @@ export default function GamePage() {
                   >
                     Cancel
                   </button>
+                  {showInsufficient && (
+                    <span className="text-red-500 text-center">ทองไม่พอ!!</span>
+                  )}
                 </div>
               </div>
             </div>

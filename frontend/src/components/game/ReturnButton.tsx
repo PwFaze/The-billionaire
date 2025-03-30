@@ -34,7 +34,7 @@ export default function ReturnButton({
         onClick={handleReturnClick}
         className="bg-blue-500 text-white px-4 py-2 rounded"
       >
-        Return
+        ย้อนกลับ
       </button>
 
       {/* Custom Confirmation Modal */}
@@ -51,13 +51,13 @@ export default function ReturnButton({
                 onClick={handleConfirm}
                 className="bg-blue-500 text-white px-4 py-2 rounded"
               >
-                Yes
+                ใช่
               </button>
               <button
                 onClick={handleCancel}
                 className="bg-red-500 text-white px-4 py-2 rounded"
               >
-                No
+                ไม่
               </button>
             </div>
           </div>

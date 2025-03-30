@@ -107,6 +107,7 @@ export default function Stock({
                   <p className="font-medium">{stock.name}</p>
                   <p>Owned: {stock.name}</p>
                   <p>Current Price: {stock.price}</p>
+                  <p>You have : {stock.amount} stocks</p>
                   <input
                     type="number"
                     min={0}
@@ -142,7 +143,7 @@ export default function Stock({
         </div>
       )}
 
-      <ReturnButton returnLocation={LOCATION[0]} setLocation={setLocation} />
+      <ReturnButton returnLocation={LOCATION[5]} setLocation={setLocation} />
     </div>
   );
 }

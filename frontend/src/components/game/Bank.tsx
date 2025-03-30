@@ -107,13 +107,7 @@ export default function Bank({
       >
         การลงทุนในตราสารหนี้
       </OptionBox>
-      {/* <Image
-        src={"/bank.png"}
-        alt="bank"
-        width={200}
-        height={50}
-        className="transition-all absolute bottom-0 duration-300 ease-in-out transform group-hover:shadow-2xl group-hover:scale-110"
-      /> */}
+      {/* <Image src={"/bank.png"} alt="bank" width={200} height={100} /> */}
 
       {showDeposit && (
         <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
@@ -296,7 +290,7 @@ export default function Bank({
           </div>
         </div>
       )}
-      <ReturnButton returnLocation={LOCATION[0]} setLocation={setLocation} />
+      <ReturnButton returnLocation={LOCATION[5]} setLocation={setLocation} />
     </div>
   );
 }

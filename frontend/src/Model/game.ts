@@ -4,6 +4,9 @@ export const LOCATION: Array<ILocation> = [
   { id: "bank", label: "ธนาคาร" },
   { id: "stock_market", label: "ตลาดหลักทรัพย์" },
   { id: "gold_shop", label: "ร้านทอง" },
+  { id: "daily_report", label: "สรุปประจำวัน" },
+  { id: "port", label: "พอร์ต" },
+  { id: "profit_summary", label: "สรุปกำไร" },
 ];
 export interface IPlayer {
   id: string;

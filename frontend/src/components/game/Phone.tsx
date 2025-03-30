@@ -1,3 +1,4 @@
+import { useGame } from "@/contexts/GameContext";
 import { INews } from "@/Model/game";
 import React, { useState } from "react";
 
@@ -7,6 +8,7 @@ interface PhoneProps {
 }
 
 const Phone = ({ news, setShowNews }: PhoneProps) => {
+  const game = useGame();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const togglePhone = () => {
@@ -28,48 +30,28 @@ const Phone = ({ news, setShowNews }: PhoneProps) => {
         >
           {isExpanded ? (
             <div className="w-full h-full overflow-y-scroll">
-              {news.map((n, index) => (
-                <div
-                  className="collapse text-start collapse-arrow p-2 text-black"
-                  key={index}
-                >
-                  <input type="checkbox" className="peer" />
-                  <h1 className="collapse-title text-black font-extrabold">
-                    Day {n.date}
-                  </h1>
-                  <div className="collapse-content overflow-y-auto">
-                    <p>{n.description}</p>
-                  </div>
-                </div>
-              ))}
-              <div className="collapse collapse-arrow text-start p-2 text-black">
-                <input type="checkbox" className="peer" />
-                <h1 className="collapse-title text-black font-extrabold">
-                  Day 3
-                </h1>
-                <div className="collapse-content overflow-y-auto">
-                  <p>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Tenetur, delectus sed excepturi nulla laudantium non dicta
-                    omnis error reprehenderit neque eligendi mollitia similique
-                    impedit quam, consequatur, sit quis perspiciatis minus.
-                  </p>
-                </div>
-              </div>
-              <div className="collapse collapse-arrow text-start p-2 text-black">
-                <input type="checkbox" className="peer" />
-                <h1 className="collapse-title text-black font-extrabold">
-                  Date
-                </h1>
-                <div className="collapse-content overflow-y-auto">
-                  <p>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Tenetur, delectus sed excepturi nulla laudantium non dicta
-                    omnis error reprehenderit neque eligendi mollitia similique
-                    impedit quam, consequatur, sit quis perspiciatis minus.
-                  </p>
-                </div>
-              </div>
+              {news.filter((n) => n.date < game.date).length > 0 ? (
+                news
+                  .filter((n) => n.date < game.date)
+                  .map((n, index) => (
+                    <div
+                      className="collapse text-start collapse-arrow p-2 text-black"
+                      key={index}
+                    >
+                      <input type="checkbox" className="peer" />
+                      <h1 className="collapse-title text-black font-extrabold">
+                        Day {n.date}
+                      </h1>
+                      <div className="collapse-content overflow-y-auto">
+                        <p>{n.description}</p>
+                      </div>
+                    </div>
+                  ))
+              ) : (
+                <p className="text-center text-gray-500 p-4">
+                  No news available.
+                </p>
+              )}
             </div>
           ) : (
             <p>Click!!</p>
