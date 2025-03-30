@@ -10,6 +10,8 @@ interface IGameContext {
     buyGoldPrice: number;
     sellGoldPrice: number;
     interestRate: number;
+    bonds: IStock[];
+    debtInstruments: IStock[];
   };
   news: INews[];
   setPlayer: React.Dispatch<React.SetStateAction<IPlayer>>;
@@ -20,6 +22,8 @@ interface IGameContext {
       buyGoldPrice: number;
       sellGoldPrice: number;
       interestRate: number;
+      bonds: IStock[];
+      debtInstruments: IStock[];
     }>
   >;
   setNews: React.Dispatch<React.SetStateAction<INews[]>>;
@@ -46,7 +50,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       bank: 5000,
       gold: 20,
       bonds: [],
-      dept_instruments: [],
+      debtInstruments: [],
     },
   });
   const [date, setDate] = useState<number>(1);
@@ -55,6 +59,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     buyGoldPrice: number;
     sellGoldPrice: number;
     interestRate: number;
+    bonds: IStock[]; // Bonds structure, same as stocks
+    debtInstruments: IStock[]; // Debt instruments structure, same as stocks
   }>({
     stocks: [
       { name: "AAPL", type: "tech", price: 150, amount: 20 },
@@ -63,12 +69,19 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     buyGoldPrice: 20000,
     sellGoldPrice: 19000,
     interestRate: 0.5,
+    bonds: [
+      { name: "GovBond", type: "bond", price: 1000, amount: 15 }, // Bond example
+    ],
+    debtInstruments: [
+      { name: "ShortTermDebt1", type: "debt", price: 500, amount: 10 }, // Debt instrument example
+      { name: "ShortTermDebt2", type: "debt", price: 500, amount: 10 }, // Debt instrument example
+    ],
   });
   const [news, setNews] = useState<INews[]>([
     {
       topic: "Stock Surge",
       description: "Tech stocks are booming!",
-      date: Date.now(),
+      date: 2,
       effect: {
         stocks: [{ type: "tech", rate: 1.1 }], // +10% for tech stocks
         gold: -2, // Gold price drops by 2%
