@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Image from "next/image";
 import OptionBox from "./OptionBox";
 import { useGame } from "@/contexts/GameContext";
 import CurrentSummary from "./CurrentSummary";
@@ -75,7 +74,6 @@ export default function Bank({
   return (
     <div className="flex flex-col items-center text-black relative gap-8">
       <CurrentSummary
-        date={game.date}
         balance={game.player.balance}
         assets={game.player.assets}
       />

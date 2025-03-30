@@ -4,16 +4,14 @@ import React, { useState } from "react";
 
 interface PhoneProps {
   news: INews[];
-  setShowNews: (show: boolean) => void;
 }
 
-const Phone = ({ news, setShowNews }: PhoneProps) => {
+const Phone = ({ news}: PhoneProps) => {
   const game = useGame();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const togglePhone = () => {
     setIsExpanded((prev) => !prev);
-    setShowNews(!isExpanded); // Correctly toggle showNews
   };
 
   return (

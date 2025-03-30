@@ -1,12 +1,4 @@
-import { IAssets } from "@/Model/game";
-
-interface PortSummaryProps {
-  date: number;
-  balance: number;
-  assests: IAssets;
-}
-
-export default function PortSummary({date, balance, assests}: PortSummaryProps) {
+export default function PortSummary() {
     return (
         <div className="bg-white rounded-4xl text-center flex flex-col items-center justify-center text-black w-auto max-w-96 px-8 py-6 gap-4">
         <h1 className="text-4xl font-extrabold">พอร์ต</h1>

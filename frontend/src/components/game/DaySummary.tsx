@@ -1,12 +1,11 @@
-import { IAssets, IStock } from "@/Model/game";
+import { IAssets} from "@/Model/game";
 
 interface DailySummaryProps {
-  date: number;
   balance: number;
   assests: IAssets;
 }
 
-export default function DaySummary({date, balance, assests}: DailySummaryProps) {
+export default function DaySummary({balance, assests}: DailySummaryProps) {
     return (
         <div className="bg-white rounded-4xl text-center flex flex-col items-center justify-center text-black w-auto max-w-96 px-8 py-4 gap-4">
         <h1 className="text-4xl font-extrabold">สรุปประจำวัน</h1>

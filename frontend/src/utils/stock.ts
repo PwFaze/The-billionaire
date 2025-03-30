@@ -1,5 +1,5 @@
 export const getStockPriceA = async (
-  ticker: string
+
 ): Promise<{ price: number; trend: string }> => {
   const basePrice = 100.0;
 

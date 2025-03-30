@@ -1,12 +1,9 @@
 "use client";
-import DaySummary from "@/components/game/DaySummary";
 import ProfitSummary from "@/components/game/ProfitSummary";
-import { useGame } from "@/contexts/GameContext";
 import { motion } from "motion/react";
 import Image from "next/image";
 
 export default function EndPage() {
-  const game = useGame();
   return (
     <div className="h-screen">
       <motion.div
