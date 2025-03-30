@@ -27,7 +27,7 @@ func (r *Router) Run(mongoDB *mongo.Database) {
 
 	// CORS setting
 	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowOrigins = []string{"http://localhost:3000"}                            // Allow the frontend's origin
+	corsConfig.AllowOrigins = []string{"*"}                                                // Allow all origins
 	corsConfig.AllowMethods = []string{"OPTIONS", "PATCH", "PUT", "GET", "POST", "DELETE"} // Allow common HTTP methods
 	corsConfig.AllowHeaders = []string{"Content-Type", "Authorization"}                    // Allow required headers
 	corsConfig.ExposeHeaders = []string{"Content-Length"}                                  // Expose content length
