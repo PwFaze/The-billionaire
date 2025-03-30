@@ -17,8 +17,7 @@ import ReturnButton from "@/components/game/ReturnButton";
 import Toast from "@/components/Toast";
 
 export default function GamePage() {
-  const { player, date, global, news, setPlayer, setGlobal} =
-    useGame();
+  const { player, date, global, news, setPlayer, setGlobal } = useGame();
   const [location, setLocation] = useState<ILocation>({
     id: "home",
     label: "บ้าน",
@@ -32,26 +31,6 @@ export default function GamePage() {
   const [showSellGold, setShowSellGold] = useState(false);
   const router = useRouter();
 
-  const calculatePlayerAssetValue = (
-    assets: IStock[]
-  ): Array<{ name: string; result: number }> => {
-    return assets.map((stock) => {
-      const globalStock = global.stocks.find(
-        (globalStock) => globalStock.name === stock.name
-      );
-
-      if (globalStock) {
-        const playerStockValue = stock.price * stock.amount;
-        const globalStockValue = globalStock.price * stock.amount;
-        return {
-          name: stock.name,
-          result: playerStockValue - globalStockValue,
-        };
-      }
-
-      return { name: stock.name, result: 0 };
-    });
-  };
   const handleBankDeposit = (deposit: number) => {
     setPlayer((prevPlayer) => ({
       ...prevPlayer,
@@ -69,23 +48,26 @@ export default function GamePage() {
 
   useEffect(() => {
     const relevantNews = news.filter((n) => n.date === date);
-  
+
     setGlobal((prevGlobal) => {
-      const updatedStocks = relevantNews.reduce((stocks, n) => {
-        return (n.effect.stocks ?? []).reduce((newStocks, effect) => {
-          return newStocks.map((stock) =>
-            stock.type === effect.type
-              ? { ...stock, price: stock.price * effect.rate }
-              : stock
-          );
-        }, stocks);
-      }, [...prevGlobal.stocks]);
-  
+      const updatedStocks = relevantNews.reduce(
+        (stocks, n) => {
+          return (n.effect.stocks ?? []).reduce((newStocks, effect) => {
+            return newStocks.map((stock) =>
+              stock.type === effect.type
+                ? { ...stock, price: stock.price * effect.rate }
+                : stock
+            );
+          }, stocks);
+        },
+        [...prevGlobal.stocks]
+      );
+
       const goldEffect = relevantNews.reduce(
         (acc, n) => acc + (n.effect.gold || 0),
         0
       );
-  
+
       return {
         ...prevGlobal,
         stocks: updatedStocks,
@@ -94,8 +76,6 @@ export default function GamePage() {
       };
     });
   }, [date, news, router, setGlobal]); // เพิ่ม router และ setGlobal เข้าไป
-  
-  
 
   const handleBonds = (amount: number, bondName: string) => {
     const bond = global.bonds?.find((b) => b.name === bondName);
@@ -360,10 +340,7 @@ export default function GamePage() {
       )}
       {location.id === "deciding" && (
         <div className="flex flex-col gap-8">
-          <CurrentSummary
-            balance={player.balance}
-            assets={player.assets}
-          />
+          <CurrentSummary balance={player.balance} assets={player.assets} />
 
           {LOCATION.slice(2).map((l, index) => (
             <OptionBox
@@ -493,10 +470,7 @@ export default function GamePage() {
 
       {location.id === "daily_report" && (
         <div className="flex flex-col gap-8">
-          <DaySummary
-            balance={player.balance}
-            assests={player.assets}
-          />
+          <DaySummary balance={player.balance} assests={player.assets} />
           <button
             className="btn text-xl rounded-md"
             onClick={() => setLocation(LOCATION[6])}
@@ -508,7 +482,7 @@ export default function GamePage() {
 
       {location.id === "port" && (
         <div className="flex flex-col gap-8">
-          <PortSummary/>
+          <PortSummary assests={player.assets} />
           <button
             className="btn text-xl rounded-md"
             onClick={() => setLocation(LOCATION[7])}

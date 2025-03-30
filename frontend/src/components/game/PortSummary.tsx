@@ -3,16 +3,10 @@ import { useGame } from "@/contexts/GameContext";
 import { IAssets } from "@/Model/game";
 
 interface PortSummaryProps {
-  date: number;
-  balance: number;
   assests: IAssets;
 }
 
-export default function PortSummary({
-  date,
-  balance,
-  assests,
-}: PortSummaryProps) {
+export default function PortSummary({ assests }: PortSummaryProps) {
   const game = useGame();
 
   return (
