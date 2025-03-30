@@ -37,7 +37,7 @@ export default function ProfitSummary({
   };
 
   return (
-    <div className="bg-white rounded-4xl text-center flex flex-col items-center justify-center text-black w-auto max-w-96 px-8 py-4">
+    <div className="bg-white rounded-4xl text-center flex flex-col items-center justify-center text-black w-auto max-w-96 px-12 py-8">
       <h1 className="text-4xl font-extrabold">สรุปกำไร</h1>
       <div className="font-extralight text-3xl flex justify-between w-full">
         <h2>เงินต้น</h2>
@@ -47,12 +47,13 @@ export default function ProfitSummary({
         <h2>เงินคงเหลือ</h2>
         <h2>{balance.toLocaleString()}</h2>
       </div>
-      <div className="py-8 text-5xl font-extrabold flex justify-between w-full">
+      <div className="py-8 text-4xl font-extrabold flex justify-between w-full">
         <h1 className={profit >= 0 ? "text-green-800" : "text-red-800"}>
-          กำไร
+          กำไร :
         </h1>
         <h1 className={profit >= 0 ? "text-green-800" : "text-red-800"}>
-          {profit.toLocaleString()} ({profitPercentage.toFixed(2)}%)
+          {"   "}
+          {profit.toLocaleString()} ({profitPercentage.toFixed(2)}%) บาท
         </h1>
       </div>
 
