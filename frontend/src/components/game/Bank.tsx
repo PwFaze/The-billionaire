@@ -4,8 +4,10 @@ import { useGame } from "@/contexts/GameContext";
 import CurrentSummary from "./CurrentSummary";
 import ReturnButton from "./ReturnButton";
 import { ILocation, LOCATION } from "@/Model/game";
+import Toast from "../Toast";
 
 interface BankProps {
+  showToast: boolean;
   showInsufficient: boolean;
   setShowInsufficient: (status: boolean) => void;
   setLocation: (location: ILocation) => void;
@@ -15,6 +17,7 @@ interface BankProps {
 }
 
 export default function Bank({
+  showToast,
   showInsufficient,
   setShowInsufficient,
   setLocation,
@@ -110,6 +113,8 @@ export default function Bank({
       {showDeposit && (
         <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
           <div className="bg-white p-6 rounded-lg text-center shadow-lg w-96">
+            {showToast && <Toast message={"ทำรายการสำเร็จ"} duration={2000} />}
+
             <h2 className="text-2xl mb-4">ฝากเงิน</h2>
             <input
               type="number"
@@ -149,6 +154,8 @@ export default function Bank({
       {showWithdraw && (
         <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            {showToast && <Toast message={"ทำรายการสำเร็จ"} duration={2000} />}
+
             <h2 className="text-2xl mb-4">ถอนเงิน</h2>
             <input
               type="number"
@@ -188,6 +195,8 @@ export default function Bank({
       {showBonds && (
         <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            {showToast && <Toast message={"ทำรายการสำเร็จ"} duration={2000} />}
+
             <h2 className="text-2xl mb-4">การลงทุนในพันธบัตร และหุ้นกู้</h2>
             <div className="space-y-4 mb-4">
               <h3 className="font-semibold">Available Bonds:</h3>
@@ -239,6 +248,7 @@ export default function Bank({
       {showDebt && (
         <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            {showToast && <Toast message={"ทำรายการสำเร็จ"} duration={2000} />}
             <h2 className="text-2xl mb-4">การลงทุนในตราสารหนี้</h2>
             <div className="space-y-4 mb-4">
               <h3 className="font-semibold">Available Debt Instruments:</h3>

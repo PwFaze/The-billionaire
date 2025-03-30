@@ -14,6 +14,7 @@ import DaySummary from "@/components/game/DaySummary";
 import PortSummary from "@/components/game/PortSummary";
 import ProfitSummary from "@/components/game/ProfitSummary";
 import ReturnButton from "@/components/game/ReturnButton";
+import Toast from "@/components/Toast";
 
 export default function GamePage() {
   const { player, date, global, news, setPlayer, setGlobal} =
@@ -24,15 +25,33 @@ export default function GamePage() {
   });
   const [showInsufficient, setShowInsufficient] = useState(false);
 
-  // const [energy, setEnergy] = useState<number>(1);
+  const [showToast, setShowToast] = useState(false);
   const [buyGold, setBuyGold] = useState<number>(0);
   const [sellGold, setSellGold] = useState<number>(0);
   const [showBuyGold, setShowBuyGold] = useState(false);
   const [showSellGold, setShowSellGold] = useState(false);
-  
-  useEffect(() => {}, [date]);
   const router = useRouter();
 
+  const calculatePlayerAssetValue = (
+    assets: IStock[]
+  ): Array<{ name: string; result: number }> => {
+    return assets.map((stock) => {
+      const globalStock = global.stocks.find(
+        (globalStock) => globalStock.name === stock.name
+      );
+
+      if (globalStock) {
+        const playerStockValue = stock.price * stock.amount;
+        const globalStockValue = globalStock.price * stock.amount;
+        return {
+          name: stock.name,
+          result: playerStockValue - globalStockValue,
+        };
+      }
+
+      return { name: stock.name, result: 0 };
+    });
+  };
   const handleBankDeposit = (deposit: number) => {
     setPlayer((prevPlayer) => ({
       ...prevPlayer,
@@ -43,8 +62,9 @@ export default function GamePage() {
       },
     }));
   };
+
   useEffect(() => {
-    if (date === 3) router.push("/end");
+    if (date === 10) router.push("/end");
   }, [date]);
 
   useEffect(() => {
@@ -120,6 +140,7 @@ export default function GamePage() {
         b.name === bondName ? { ...b, amount: b.amount - amount } : b
       ),
     }));
+    setShowToast(true);
   };
   const handleBuyGold = () => {
     console.log(player);
@@ -142,6 +163,7 @@ export default function GamePage() {
     }));
 
     console.log(player);
+    setShowToast(true);
   };
 
   const handleSellGold = () => {
@@ -165,6 +187,7 @@ export default function GamePage() {
         },
       }));
     }
+    setShowToast(true);
   };
 
   const handleDebtInstruments = (amount: number, debtName: string) => {
@@ -209,6 +232,7 @@ export default function GamePage() {
         d.name === debtName ? { ...d, amount: d.amount - amount } : d
       ),
     }));
+    setShowToast(true);
   };
 
   const handleBuyStock = (amount: number, stockName: string) => {
@@ -265,6 +289,7 @@ export default function GamePage() {
         s.name === stockName ? { ...s, amount: s.amount - amount } : s
       ),
     }));
+    setShowToast(true);
   };
 
   const handleSellStock = (amount: number, stockName: string) => {
@@ -299,6 +324,7 @@ export default function GamePage() {
         s.name === stockName ? { ...s, amount: s.amount + amount } : s
       ),
     }));
+    setShowToast(true);
   };
 
   return (
@@ -376,6 +402,9 @@ export default function GamePage() {
           {showBuyGold && (
             <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
               <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                {showToast && (
+                  <Toast message={"ทำรายการสำเร็จ"} duration={2000} />
+                )}
                 <h2 className="text-2xl mb-4">ซื้อทอง</h2>
                 <input
                   type="number"
@@ -418,6 +447,9 @@ export default function GamePage() {
           {showSellGold && (
             <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
               <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                {showToast && (
+                  <Toast message={"ทำรายการสำเร็จ"} duration={2000} />
+                )}
                 <h2 className="text-2xl mb-4">ขายทอง</h2>
                 <input
                   type="number"
@@ -500,6 +532,7 @@ export default function GamePage() {
 
       {location.id === "bank" && (
         <Bank
+          showToast={showToast}
           showInsufficient={showInsufficient}
           setShowInsufficient={setShowInsufficient}
           setLocation={setLocation}
@@ -510,6 +543,7 @@ export default function GamePage() {
       )}
       {location.id === "stock_market" && (
         <Stock
+          showToast={showToast}
           showInsufficient={showInsufficient}
           setShowInsufficient={setShowInsufficient}
           setLocation={setLocation}

@@ -4,8 +4,10 @@ import { useGame } from "@/contexts/GameContext";
 import CurrentSummary from "./CurrentSummary";
 import ReturnButton from "./ReturnButton";
 import { ILocation, LOCATION } from "@/Model/game";
+import Toast from "../Toast";
 
 interface StockProps {
+  showToast: boolean;
   showInsufficient: boolean;
   setShowInsufficient: (status: boolean) => void;
   setLocation: (location: ILocation) => void;
@@ -14,6 +16,7 @@ interface StockProps {
 }
 
 export default function Stock({
+  showToast,
   showInsufficient,
   setShowInsufficient,
   setLocation,
@@ -47,6 +50,8 @@ export default function Stock({
       {showBuy && (
         <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            {showToast && <Toast message={"ทำรายการสำเร็จ"} duration={2000} />}
+
             <h2 className="text-2xl mb-4">ซื้อหุ้น</h2>
             <div className="space-y-4 mb-4">
               {game.global.stocks?.map((stock) => (
