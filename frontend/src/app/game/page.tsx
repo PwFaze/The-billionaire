@@ -10,6 +10,14 @@ import OptionBox from "@/components/game/OptionBox";
 import Bank from "@/components/game/Bank";
 import { ILocation, IStock, LOCATION } from "@/Model/game";
 import Stock from "@/components/game/Stock";
+import { set } from "react-hook-form";
+import { g } from "motion/react-client";
+import DaySummary from "@/components/game/DaySummary";
+import PortSummary from "@/components/game/PortSummary";
+import ProfitSummary from "@/components/game/ProfitSummary";
+
+
+
 
 export default function GamePage() {
   const { player, date, global, news, setPlayer, setDate, setGlobal, setNews } =
@@ -79,6 +87,50 @@ export default function GamePage() {
       ),
     }));
   };
+    const handleBuyGold = () => {
+
+      console.log(player)
+    
+      const buyGoldPrice = global.buyGoldPrice;
+      const totalCost = buyGold * buyGoldPrice;
+
+      if (player.assets.bank < totalCost) {
+        return alert("Insufficient funds in the bank");
+      }
+
+      setPlayer((prevPlayer) => ({
+        ...prevPlayer,
+        assets: {
+          ...prevPlayer.assets,
+          bank: prevPlayer.assets.bank - totalCost, //deduct from bank
+          gold: (prevPlayer.assets?.gold || 0) + stock,
+        },
+      }));
+
+      console.log(player);
+  }
+
+  const handleSellGold = () => {
+      //sell gold
+      const sellGoldPrice = global.sellGoldPrice;
+      const totalCost = sellGold * sellGoldPrice;
+      const goldToSell = player.assets.gold;
+      
+      if (goldToSell < sellGold) {
+        return alert("Insufficient gold to sell");
+      }
+      if (goldToSell) {
+        setPlayer((prevPlayer) => ({
+          ...prevPlayer,
+          assets: {
+            ...prevPlayer.assets,
+            bank: prevPlayer.assets.bank + totalCost, //add to bank
+            gold: prevPlayer.assets.gold - sellGold,
+          },
+        }));
+      }
+      
+  }
 
   const handleDebtInstruments = (amount: number, debtName: string) => {
     const debt = global.debtInstruments?.find((d) => d.name === debtName);
@@ -226,6 +278,7 @@ export default function GamePage() {
             balance={player.balance}
             assets={player.assets}
           />
+
           {LOCATION.slice(2).map((l, index) => (
             <OptionBox
               key={l.id}
@@ -238,6 +291,124 @@ export default function GamePage() {
           ))}
         </div>
       )}
+
+      {location.id === "gold_shop" && (
+        <div className="flex flex-col items-center justify-center text-black w-auto max-w-96 px-8 py-4 gap-16">
+          <OptionBox
+            onClick={() => {
+              setShowBuyGold(true); // Show buy gold modal
+            }}
+          >
+            {`ซื้อทอง บาทละ ${global.buyGoldPrice} บาท`}
+          </OptionBox>
+          <OptionBox
+            onClick={() => {
+              setShowSellGold(true); // Show sell gold modal
+            }}
+          >
+            {`ขายทอง บาทละ ${global.sellGoldPrice} บาท`}
+          </OptionBox>
+
+          {showBuyGold && (
+            <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 className="text-2xl mb-4">ซื้อทอง</h2>
+                <input
+                  type="number"
+                  value={buyGold}
+                  onChange={(e) => setBuyGold(Number(e.target.value))}
+                  className="p-2 mb-4 w-full border rounded"
+                  placeholder="Amount to buy"
+                />
+                <div className="flex justify-between">
+                  <button
+                    onClick={() => { handleBuyGold(); setLocation(LOCATION[1]); setShowBuyGold(false); setBuyGold(0); }} 
+                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                  >
+                    Buy
+                  </button>
+                  <button
+                    onClick={() => setShowBuyGold(false)}
+                    className="bg-red-500 text-white px-4 py-2 rounded"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {showSellGold && (
+              <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm">
+                <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                  <h2 className="text-2xl mb-4">ขายทอง</h2>
+                  <input
+                    type="number"
+                    value={sellGold}
+                    onChange={(e) => setSellGold(Number(e.target.value))}
+                    className="p-2 mb-4 w-full border rounded"
+                    placeholder="Amount to sell"
+                  />
+                  <div className="flex justify-between">
+                    <button
+                      onClick={() => {handleSellGold; setLocation(LOCATION[5]); setShowSellGold(false); setSellGold(0); }}
+                      className="bg-blue-500 text-white px-4 py-2 rounded"
+                    >
+                      Sell
+                    </button>
+                    <button
+                      onClick={() => setShowSellGold(false)}
+                      className="bg-red-500 text-white px-4 py-2 rounded"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          <Image
+            src={"/gold_shop.png"}
+            alt="Gold Shop"
+            width={200}
+            height={100}
+            className="mt-20"
+          />
+        </div>
+      )} 
+
+      {location.id === "daily_report" && (
+        <div className="flex flex-col gap-8">
+          <DaySummary 
+            date = {date}
+            balance = {player.balance}
+            assests = {player.assets}
+          />
+          <button className="btn text-xl rounded-md" onClick={() => setLocation(LOCATION[6])}>Next</button>
+        </div>
+      )}
+
+      {location.id === "port" && (
+        <div className="flex flex-col gap-8">
+          <PortSummary
+            date = {date}
+            balance = {player.balance}
+            assests = {player.assets}
+          />
+          <button className="btn text-xl rounded-md" onClick={() => setLocation(LOCATION[7])}>Next</button>
+        </div>
+      )}
+
+      {location.id === "profit_summary" && (
+        <div className="flex flex-col gap-8">
+          <ProfitSummary
+            principal = {player.balance}
+            balance = {player.balance}
+          />
+          <button className="btn text-xl rounded-md" onClick={() => setLocation(LOCATION[0])}>Next</button>
+          
+        </div>
+      )}
+
       {location.id === "bank" && (
         <Bank
           showInsufficient={showInsufficient}

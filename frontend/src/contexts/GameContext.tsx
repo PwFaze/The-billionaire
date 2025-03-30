@@ -7,7 +7,8 @@ interface IGameContext {
   date: number;
   global: {
     stocks: IStock[];
-    goldPrice: number;
+    buyGoldPrice: number;
+    sellGoldPrice: number;
     interestRate: number;
     bonds: IStock[];
     debtInstruments: IStock[];
@@ -18,7 +19,8 @@ interface IGameContext {
   setGlobal: React.Dispatch<
     React.SetStateAction<{
       stocks: IStock[];
-      goldPrice: number;
+      buyGoldPrice: number;
+      sellGoldPrice: number;
       interestRate: number;
       bonds: IStock[];
       debtInstruments: IStock[];
@@ -54,7 +56,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [date, setDate] = useState<number>(1);
   const [global, setGlobal] = useState<{
     stocks: IStock[];
-    goldPrice: number;
+    buyGoldPrice: number;
+    sellGoldPrice: number;
     interestRate: number;
     bonds: IStock[]; // Bonds structure, same as stocks
     debtInstruments: IStock[]; // Debt instruments structure, same as stocks
@@ -63,7 +66,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       { name: "AAPL", type: "tech", price: 150, amount: 20 },
       { name: "GOOGL", type: "tech", price: 2800, amount: 20 },
     ],
-    goldPrice: 20000,
+    buyGoldPrice: 20000,
+    sellGoldPrice: 19000,
     interestRate: 0.5,
     bonds: [
       { name: "GovBond", type: "bond", price: 1000, amount: 15 }, // Bond example
