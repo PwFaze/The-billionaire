@@ -7,7 +7,7 @@ interface OptionBoxProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export default function OptionBox({ className, ...props }: OptionBoxProps) {
   return (
     <button
-      className={`px-20 py-4 text-3xl cursor-pointer font-extralight bg-white text-black rounded-lg ring-6 ring-amber-300 transition ${className}`}
+      className={`px-20 py-4 max-w-md text-center text-3xl cursor-pointer font-extralight bg-white text-black rounded-lg ring-6 ring-amber-300 transition ${className}`}
       {...props}
     />
   );

@@ -34,8 +34,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        style={{ fontFamily: "Koho, sans-serif" }}
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`font-primary ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
           <GameProvider>
