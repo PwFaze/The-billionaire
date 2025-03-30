@@ -29,7 +29,6 @@ export default function GamePage() {
   const [sellGold, setSellGold] = useState<number>(0);
   const [showBuyGold, setShowBuyGold] = useState(false);
   const [showSellGold, setShowSellGold] = useState(false);
-  const [showNews, setShowNews] = useState<boolean>(false);
   const router = useRouter();
 
   const calculatePlayerAssetValue = (
@@ -315,7 +314,7 @@ export default function GamePage() {
             className="absolute top-0 left-0 w-full h-full object-cover"
           />
           <div className="group z-10 mt-20 flex flex-col items-center gap-8">
-            <Phone setShowNews={setShowNews} news={news} />
+            <Phone news={news} />
             <Image
               src={"/wallet.png"}
               alt="Wallet"
