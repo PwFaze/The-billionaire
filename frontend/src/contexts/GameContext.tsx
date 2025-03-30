@@ -46,7 +46,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     name: "Default Player",
     balance: 10000,
     assets: {
-      stocks: [{ name: "AAPL", type: "tech", price: 150, amount: 10 }],
+      stocks: [],
       bank: 5000,
       gold: 20,
       bonds: [],
@@ -63,8 +63,9 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     debtInstruments: IStock[]; // Debt instruments structure, same as stocks
   }>({
     stocks: [
-      { name: "AAPL", type: "tech", price: 150, amount: 20 },
-      { name: "GOOGL", type: "tech", price: 2800, amount: 20 },
+      { name: "PPEACH", type: "tech", price: 150, amount: 2000 },
+      { name: "YAGLE", type: "tech", price: 2800, amount: 2000 },
+      { name: "TTP", type: "oil", price: 300, amount: 3000 },
     ],
     buyGoldPrice: 20000,
     sellGoldPrice: 19000,
@@ -85,6 +86,19 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       effect: {
         stocks: [{ type: "tech", rate: 1.1 }], // +10% for tech stocks
         gold: -2, // Gold price drops by 2%
+      },
+    },
+    {
+      topic: "Tom Yum Goong Economy",
+      description:
+        "an economic situation characterized by high instability, volatility, and unpredictable fluctuations",
+      date: 3,
+      effect: {
+        stocks: [
+          { type: "tech", rate: 0.85 },
+          { type: "oil", rate: 0.7 },
+        ],
+        gold: 10,
       },
     },
   ]);

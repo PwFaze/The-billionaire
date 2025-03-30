@@ -1,3 +1,6 @@
+"use client";
+import { usePathname } from "next/navigation";
+
 interface ProfitSummaryProps {
   principal: number;
   balance: number;
@@ -8,6 +11,7 @@ export default function ProfitSummary({
   balance,
 }: ProfitSummaryProps) {
   const profit = balance - principal;
+  const pathname = usePathname();
   const profitPercentage = principal !== 0 ? (profit / principal) * 100 : 0;
 
   const getSummary = (profit: number): string => {
@@ -52,7 +56,7 @@ export default function ProfitSummary({
         </h1>
       </div>
 
-      <p className="">{getSummary(profit)}</p>
+      {pathname === "/end" && <p className="">{getSummary(profit)}</p>}
     </div>
   );
 }
