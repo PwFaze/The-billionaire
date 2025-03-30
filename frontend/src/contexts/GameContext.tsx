@@ -7,7 +7,8 @@ interface IGameContext {
   date: number;
   global: {
     stocks: IStock[];
-    goldPrice: number;
+    buyGoldPrice: number;
+    sellGoldPrice: number;
     interestRate: number;
   };
   news: INews[];
@@ -16,7 +17,8 @@ interface IGameContext {
   setGlobal: React.Dispatch<
     React.SetStateAction<{
       stocks: IStock[];
-      goldPrice: number;
+      buyGoldPrice: number;
+      sellGoldPrice: number;
       interestRate: number;
     }>
   >;
@@ -43,19 +45,23 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       stocks: [{ name: "AAPL", type: "tech", price: 150, amount: 10 }],
       bank: 5000,
       gold: 20,
+      bonds: [],
+      dept_instruments: [],
     },
   });
   const [date, setDate] = useState<number>(1);
   const [global, setGlobal] = useState<{
     stocks: IStock[];
-    goldPrice: number;
+    buyGoldPrice: number;
+    sellGoldPrice: number;
     interestRate: number;
   }>({
     stocks: [
       { name: "AAPL", type: "tech", price: 150, amount: 20 },
       { name: "GOOGL", type: "tech", price: 2800, amount: 20 },
     ],
-    goldPrice: 20000,
+    buyGoldPrice: 20000,
+    sellGoldPrice: 19000,
     interestRate: 0.5,
   });
   const [news, setNews] = useState<INews[]>([
